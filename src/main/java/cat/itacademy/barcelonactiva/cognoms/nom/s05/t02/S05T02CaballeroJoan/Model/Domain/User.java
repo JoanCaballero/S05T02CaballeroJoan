@@ -59,7 +59,4 @@ public class User implements UserDetails {
         return true;
     }
 
-//    @Enumerated(EnumType.ORDINAL)
-//    private Role role;
-
 }
