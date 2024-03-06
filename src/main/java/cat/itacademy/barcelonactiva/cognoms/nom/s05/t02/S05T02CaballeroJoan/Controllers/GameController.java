@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/players")
 public class GameController {
@@ -17,20 +19,20 @@ public class GameController {
 
     @Operation(summary = "Play a new game and save it")
     @PostMapping("/{id}/games")
-    public ResponseEntity<GameDTO> playGame(@PathVariable("id") Integer id, HttpServletRequest request) {
+    public ResponseEntity<GameDTO> playGame(@PathVariable("id") long id, HttpServletRequest request) {
         request.getHeader("username");
-        return ResponseEntity.status(HttpStatus.CREATED, );
+        return ResponseEntity.status(HttpStatus.CREATED).body(gameService.playerPlayGame(id));
     }
     @Operation(summary = "Delete all games belonging to a given player")
     @DeleteMapping("/{id}/games")
     public ResponseEntity<GameDTO> deleteGames(@PathVariable("id") Integer id) {
-        gameService.deleteByPlayer(id);
+        gameService.deleteGames(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "Show all games for a given player")
     @GetMapping("/{id}/games")
     public ResponseEntity<List<GameDTO>> getGames(@PathVariable("id") Integer id) {
-        return new ResponseEntity<>(gameService.getByPlayerId(id), HttpStatus.OK);
+        return new ResponseEntity<>(gameService.listGamesByPlayer(id), HttpStatus.OK);
     }
 }
