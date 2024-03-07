@@ -9,6 +9,7 @@ import cat.itacademy.barcelonactiva.cognoms.nom.s05.t02.S05T02CaballeroJoan.Mode
 import cat.itacademy.barcelonactiva.cognoms.nom.s05.t02.S05T02CaballeroJoan.Model.Service.Interfaces.PlayerService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class PlayerServiceImpl implements PlayerService {
 
     @Autowired
@@ -66,13 +68,13 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDTO loser() {
         List<Player> players = playerRepository.findAll();
-        return toDTO(players.stream().sorted(Comparator.comparing(Player::winRate)).findFirst().orElseThrow(()-> new ArrayIndexOutOfBoundsException("No players found.")));
+        return toDTO(players.stream().min(Comparator.comparing(Player::winRate)).orElseThrow(()-> new ArrayIndexOutOfBoundsException("No players found.")));
     }
 
     @Override
     public PlayerDTO winner() {
         List<Player> players = playerRepository.findAll();
-        return toDTO(players.stream().sorted(Comparator.comparing(Player::winRate).reversed()).findFirst().orElseThrow(()-> new ArrayIndexOutOfBoundsException("No players found.")));
+        return toDTO(players.stream().max(Comparator.comparing(Player::winRate)).orElseThrow(()-> new ArrayIndexOutOfBoundsException("No players found.")));
     }
 
     public PlayerDTO toDTO(Player player){
