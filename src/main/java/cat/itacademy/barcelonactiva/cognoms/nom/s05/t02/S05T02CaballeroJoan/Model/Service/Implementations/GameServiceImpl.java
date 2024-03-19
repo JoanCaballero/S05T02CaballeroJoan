@@ -25,25 +25,22 @@ public class GameServiceImpl implements GameService {
     private PlayerRepository playerRepository;
 
     @Override
-    public GameDTO playerPlayGame(long id) {
+    public GameDTO playerPlayGame(int id) {
         Player player = playerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Player not found."));
-        Game game = new Game();
-        Player newPlayer = new Player();
+        Game game = new Game(player);
         diceRoll(game);
-        game.setPlayer(newPlayer);
-        newPlayer.addGame(game);
         return toDTO(gameRepository.save(game));
     }
 
     @Transactional
     @Override
-    public void deleteGames(long id) {
+    public void deleteGames(int id) {
         playerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Player not found."));
         gameRepository.deleteByPlayerId(id);
     }
 
     @Override
-    public List<GameDTO> listGamesByPlayer(long id) {
+    public List<GameDTO> listGamesByPlayer(int id) {
         playerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Player not found."));
         return gameRepository.findByPlayerId(id).stream().map(this::toDTO).collect(Collectors.toList());
     }
@@ -56,6 +53,6 @@ public class GameServiceImpl implements GameService {
     }
 
     public GameDTO toDTO(Game game){
-        return new GameDTO(game.getGameID(), game.getDiceOne(), game.getDiceTwo(), game.isWon());
+        return new GameDTO(game.getGameID(), game.getPlayer().getId(),game.getDiceOne(), game.getDiceTwo(), game.isWon());
     }
 }

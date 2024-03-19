@@ -2,7 +2,9 @@ package cat.itacademy.barcelonactiva.cognoms.nom.s05.t02.S05T02CaballeroJoan.Mod
 
 import cat.itacademy.barcelonactiva.cognoms.nom.s05.t02.S05T02CaballeroJoan.Model.Domain.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface PlayerRepository extends JpaRepository<Player, Long> {
+@Repository
+public interface PlayerRepository extends JpaRepository<Player, Integer> {
     boolean existsByPlayerName(String name);
 }

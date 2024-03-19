@@ -5,7 +5,7 @@ import cat.itacademy.barcelonactiva.cognoms.nom.s05.t02.S05T02CaballeroJoan.Mode
 import java.util.List;
 
 public interface GameService {
-    GameDTO playerPlayGame(long id);
-    void deleteGames(long id);
-    List<GameDTO> listGamesByPlayer(long id);
+    GameDTO playerPlayGame(int id);
+    void deleteGames(int id);
+    List<GameDTO> listGamesByPlayer(int id);
 }

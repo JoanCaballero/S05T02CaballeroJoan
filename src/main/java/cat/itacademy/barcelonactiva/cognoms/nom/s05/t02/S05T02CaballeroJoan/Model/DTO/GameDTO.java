@@ -2,15 +2,14 @@ package cat.itacademy.barcelonactiva.cognoms.nom.s05.t02.S05T02CaballeroJoan.Mod
 
 import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class GameDTO {
-
-    private long gameID;
+    private int gameID;
+    private int playerID;
     private int diceOne;
     private int diceTwo;
     private boolean won;

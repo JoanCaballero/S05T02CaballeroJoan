@@ -29,9 +29,9 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDTO save(PlayerDTO playerDTO) {
         String playerName = playerDTO.getPlayerName();
-        if(playerDTO.getPlayerName().isBlank() || playerDTO.getPlayerName().equalsIgnoreCase("ANONIM")){
+        if(playerName == null || playerName.equalsIgnoreCase("ANONIM")){
             playerDTO.setPlayerName("ANONIM");
-        } else if(playerRepository.existsByPlayerName(playerDTO.getPlayerName())){
+        } else if(playerRepository.existsByPlayerName(playerName)){
             throw new InvalidUsernameException("This username already exists.");
         }
         playerDTO.setRegistrationDate(LocalDateTime.now());
@@ -40,12 +40,12 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public PlayerDTO update(PlayerDTO playerDTO) {
-        findById(playerDTO.getPlayerID());
+        findById(playerDTO.getId());
         return toDTO(playerRepository.save(toEntity(playerDTO)));
     }
 
     @Override
-    public PlayerDTO findById(long id) {
+    public PlayerDTO findById(int id) {
         return toDTO(playerRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Player not found.")));
     }
 
@@ -56,35 +56,48 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public double avgWinRate() {
-        List<Player> players = playerRepository.findAll();
+        List<PlayerDTO> players = findAll();
 
-        if(!players.isEmpty()){
-            return players.stream().mapToDouble(Player::winRate).sum()/players.size();
+        if(players.isEmpty()){
+            return  0;
         }else{
-            throw new ArrayIndexOutOfBoundsException("No players found.");
+            return players.stream()
+                    .mapToDouble(PlayerDTO::getWinRate)
+                    .average()
+                    .orElse(0.0);
         }
     }
 
     @Override
     public PlayerDTO loser() {
-        List<Player> players = playerRepository.findAll();
-        return toDTO(players.stream().min(Comparator.comparing(Player::winRate)).orElseThrow(()-> new ArrayIndexOutOfBoundsException("No players found.")));
+        List<PlayerDTO> players = findAll();
+        return players.stream().min(Comparator.comparing(PlayerDTO::getWinRate)).orElseThrow(()-> new ArrayIndexOutOfBoundsException("No players found."));
     }
 
     @Override
     public PlayerDTO winner() {
-        List<Player> players = playerRepository.findAll();
-        return toDTO(players.stream().max(Comparator.comparing(Player::winRate)).orElseThrow(()-> new ArrayIndexOutOfBoundsException("No players found.")));
+        List<PlayerDTO> players = findAll();
+        return players.stream().max(Comparator.comparing(PlayerDTO::getWinRate)).orElseThrow(()-> new ArrayIndexOutOfBoundsException("No players found."));
+    }
+
+    private double getPlayerWinRate(Player player){
+        List<Game> games = gameRepository.findByPlayerId(player.getId());
+        if(games.isEmpty()){
+            return 0;
+        }else{
+            double avg = games.stream().filter(Game::isWon).count();
+            return avg/games.size();
+        }
     }
 
     public PlayerDTO toDTO(Player player){
-        return new PlayerDTO(player.getPlayerID(), player.getPlayerName(), player.getRegistrationDate());
+        return new PlayerDTO(player.getId(), player.getPlayerName(), player.getRegistrationDate(), getPlayerWinRate(player));
     }
 
     public Player toEntity(PlayerDTO playerDTO){
         Player player = new Player();
 
-        player.setPlayerID(player.getPlayerID());
+        player.setId(player.getId());
         player.setPlayerName(playerDTO.getPlayerName());
         player.setRegistrationDate(playerDTO.getRegistrationDate());
         return player;

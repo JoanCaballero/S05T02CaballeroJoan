@@ -11,44 +11,42 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/players")
 public class PlayerController {
-
     @Autowired
     private PlayerService playerService;
 
     @Operation(summary = "Create a new player")
-    @PostMapping("")
-    public ResponseEntity<?> createPlayer(@RequestBody PlayerDTO playerDTO){
+    @PostMapping("/players")
+    public ResponseEntity<PlayerDTO> createPlayer(@RequestBody PlayerDTO playerDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(playerService.save(playerDTO));
     }
 
     @Operation(summary = "Update an existing player")
-    @PutMapping("")
+    @PutMapping("/players")
     public ResponseEntity<PlayerDTO> updatePlayer(@RequestBody PlayerDTO playerDTO){
         return ResponseEntity.ok(playerService.update(playerDTO));
     }
 
     @Operation(summary = "List all existing players with their win rate")
-    @GetMapping("")
+    @GetMapping("/players")
     public ResponseEntity<List<PlayerDTO>> getAllPlayers(){
         return ResponseEntity.ok(playerService.findAll());
     }
 
     @Operation(summary = "Show the average win rate between all players")
-    @GetMapping("/ranking")
+    @GetMapping("/players/ranking")
     public ResponseEntity<Double> getAverageWinRate() {
         return ResponseEntity.ok(playerService.avgWinRate());
     }
 
     @Operation(summary = "Show a player with the worst win rate")
-    @GetMapping("/ranking/loser")
+    @GetMapping("/players/ranking/loser")
     public ResponseEntity<PlayerDTO> getLoser() {
         return ResponseEntity.ok(playerService.loser());
     }
 
     @Operation(summary = "Show a player with the best win rate")
-    @GetMapping("/ranking/winner")
+    @GetMapping("/players/ranking/winner")
     public ResponseEntity<PlayerDTO> getWinner() {
         return ResponseEntity.ok(playerService.winner());
     }

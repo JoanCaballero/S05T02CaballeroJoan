@@ -12,27 +12,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/players")
 public class GameController {
     @Autowired
     GameService gameService;
 
     @Operation(summary = "Play a new game and save it")
-    @PostMapping("/{id}/games")
-    public ResponseEntity<GameDTO> playGame(@PathVariable("id") long id, HttpServletRequest request) {
+    @PostMapping("/players/{id}/games")
+    public ResponseEntity<GameDTO> playGame(@PathVariable("id") Integer id, HttpServletRequest request) {
         request.getHeader("username");
         return ResponseEntity.status(HttpStatus.CREATED).body(gameService.playerPlayGame(id));
     }
     @Operation(summary = "Delete all games belonging to a given player")
-    @DeleteMapping("/{id}/games")
+    @DeleteMapping("/players/{id}/games")
     public ResponseEntity<GameDTO> deleteGames(@PathVariable("id") Integer id) {
         gameService.deleteGames(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Show all games for a given player")
-    @GetMapping("/{id}/games")
+    @GetMapping("/players/{id}/games")
     public ResponseEntity<List<GameDTO>> getGames(@PathVariable("id") Integer id) {
-        return new ResponseEntity<>(gameService.listGamesByPlayer(id), HttpStatus.OK);
+        return ResponseEntity.ok(gameService.listGamesByPlayer(id));
     }
 }

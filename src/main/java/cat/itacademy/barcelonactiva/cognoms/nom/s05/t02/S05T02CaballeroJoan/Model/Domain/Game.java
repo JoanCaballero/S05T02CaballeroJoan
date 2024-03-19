@@ -7,16 +7,15 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name="GameDTO")
+@Table(name="games")
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long gameID;
+    private int gameID;
 
     @Column(name = "Dice_One")
     private int diceOne;
