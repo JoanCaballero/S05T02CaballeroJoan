@@ -23,7 +23,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String getUserName(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return getClaim(token, Claims::getSubject);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class JwtServiceImpl implements JwtService {
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsTFunction){
+    private <T> T getClaim(String token, Function<Claims, T> claimsTFunction){
         final Claims claims = getAllClaims(token);
         return claimsTFunction.apply(claims);
     }
@@ -55,7 +55,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Date getExpiration(String token){
-        return extractClaim(token, Claims::getExpiration);
+        return getClaim(token, Claims::getExpiration);
     }
 
     private Claims getAllClaims(String token){

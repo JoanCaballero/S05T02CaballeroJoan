@@ -15,11 +15,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Document
+@Document(collection = "Users")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+
 public class User implements UserDetails {
     @Id
     private String email;

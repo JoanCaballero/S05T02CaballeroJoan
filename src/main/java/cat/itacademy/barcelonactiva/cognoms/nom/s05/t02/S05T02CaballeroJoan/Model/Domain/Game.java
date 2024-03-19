@@ -1,10 +1,12 @@
 package cat.itacademy.barcelonactiva.cognoms.nom.s05.t02.S05T02CaballeroJoan.Model.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -13,7 +15,7 @@ import lombok.*;
 @Table(name="GameDTO")
 public class Game {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long gameID;
 
     @Column(name = "Dice_One")
@@ -25,10 +27,15 @@ public class Game {
     @Column(name="result")
     private boolean won;
 
-    @ManyToOne
-    @JoinColumn(name = "playerID")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "playerID", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Player player;
 
+    public Game(Player player){
+        this.player = player;
+    }
     public boolean won(){
         return diceOne + diceTwo == 7;
     }
