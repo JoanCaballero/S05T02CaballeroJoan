@@ -4,6 +4,9 @@ import cat.itacademy.barcelonactiva.cognoms.nom.s05.t02.S05T02CaballeroJoan.Mode
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
+    Optional<User> findByEmail(String email);
 }

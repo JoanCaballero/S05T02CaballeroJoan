@@ -30,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if(request.getEmail().isEmpty() || request.getPassword().isEmpty()){
             throw new IllegalArgumentException("Email and password can't be null.");
         }
-        userRepository.findById(request.getEmail())
+        userRepository.findByEmail(request.getEmail())
                 .ifPresent(user -> {throw new EntityExistsException("Email is already registered.");
                 });
         User user = User.builder()
@@ -48,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public AuthenticationResponse signIn(SignInDTO request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        User user = userRepository.findById(request.getEmail()).orElseThrow(()-> new EntityNotFoundException("Email not found."));
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(()-> new EntityNotFoundException("Email not found."));
         String jwt = jwtService.tokenGenerator(user);
         return AuthenticationResponse.builder().token(jwt).build();
     }

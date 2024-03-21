@@ -1,6 +1,7 @@
 package cat.itacademy.barcelonactiva.cognoms.nom.s05.t02.S05T02CaballeroJoan.Controllers;
 
 import cat.itacademy.barcelonactiva.cognoms.nom.s05.t02.S05T02CaballeroJoan.Model.Exceptions.InvalidUsernameException;
+import cat.itacademy.barcelonactiva.cognoms.nom.s05.t02.S05T02CaballeroJoan.Model.Exceptions.PlayerAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,12 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidUsernameException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     protected ResponseEntity<String> handleInvalidUsernameException(InvalidUsernameException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(PlayerAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    protected ResponseEntity<String> handlePlayerAlreadyExistsException(PlayerAlreadyExistsException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
 

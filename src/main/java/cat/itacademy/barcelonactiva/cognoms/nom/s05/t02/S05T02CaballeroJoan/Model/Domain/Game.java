@@ -17,10 +17,10 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int gameID;
 
-    @Column(name = "Dice_One")
+    @Column(name = "dice_one")
     private int diceOne;
 
-    @Column(name = "Dice_Two")
+    @Column(name = "dice_two")
     private int diceTwo;
 
     @Column(name="result")

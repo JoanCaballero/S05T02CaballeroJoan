@@ -29,13 +29,23 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDTO save(PlayerDTO playerDTO) {
         String playerName = playerDTO.getPlayerName();
-        if(playerName == null || playerName.equalsIgnoreCase("ANONIM")){
+        if (playerName == null || playerName.trim().isEmpty()) {
             playerDTO.setPlayerName("ANONIM");
-        } else if(playerRepository.existsByPlayerName(playerName)){
-            throw new InvalidUsernameException("This username already exists.");
+        } else {
+            if (playerRepository.existsByPlayerName(playerName)) {
+                throw new InvalidUsernameException("This username already exists.");
+            }
         }
-        playerDTO.setRegistrationDate(LocalDateTime.now());
-        return toDTO(playerRepository.save(toEntity(playerDTO)));
+
+        if (playerDTO.getRegistrationDate() == null) {
+            playerDTO.setRegistrationDate(LocalDateTime.now());
+        }
+
+        if (playerDTO.getWinRate() == 0.0) {
+            playerDTO.setWinRate(0.0);
+        }
+        Player savedPlayer = playerRepository.save(toEntity(playerDTO));
+        return toDTO(savedPlayer);
     }
 
     @Override
@@ -91,13 +101,17 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     public PlayerDTO toDTO(Player player){
-        return new PlayerDTO(player.getId(), player.getPlayerName(), player.getRegistrationDate(), getPlayerWinRate(player));
+        PlayerDTO playerDTO = new PlayerDTO();
+        playerDTO.setId(player.getId());
+        playerDTO.setPlayerName(player.getPlayerName());
+        playerDTO.setRegistrationDate(player.getRegistrationDate());
+        playerDTO.setWinRate(getPlayerWinRate(player));
+        return playerDTO;
     }
 
     public Player toEntity(PlayerDTO playerDTO){
         Player player = new Player();
-
-        player.setId(player.getId());
+        player.setId(playerDTO.getId());
         player.setPlayerName(playerDTO.getPlayerName());
         player.setRegistrationDate(playerDTO.getRegistrationDate());
         return player;
