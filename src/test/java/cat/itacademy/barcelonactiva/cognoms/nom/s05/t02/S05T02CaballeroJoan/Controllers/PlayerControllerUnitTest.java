@@ -77,7 +77,7 @@ public class PlayerControllerUnitTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.playerName", is("Player 1")))
-                .andExpect(jsonPath("$.winRate", is(0)))
+                .andExpect(jsonPath("$.winRate", is(0d)))
                 .andExpect(jsonPath("$").isNotEmpty());
     }
     @DisplayName("PlayerControllerUnitTest - updatePlayer updates existing player")
@@ -94,7 +94,7 @@ public class PlayerControllerUnitTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.playerName", is("Player 1")))
-                .andExpect(jsonPath("$.winRate", is(0)))
+                .andExpect(jsonPath("$.winRate", is(0d)))
                 .andExpect(jsonPath("$").isNotEmpty());
     }
 
@@ -119,11 +119,11 @@ public class PlayerControllerUnitTest {
     @DisplayName("PlayerControllerUnitTest - getAverageWinRate returns global average score")
     @Test
     void getAverageWinRate() throws Exception {
-        when(playerService.avgWinRate()).thenReturn(0.25);
+        when(playerService.avgWinRate()).thenReturn(0.25d);
         mockMvc.perform(get("/players/ranking"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$").value(0.25));
+                .andExpect(jsonPath("$").value(0.25d));
     }
 
     @DisplayName("PlayerControllerUnitTest - loser returns player")
@@ -140,7 +140,7 @@ public class PlayerControllerUnitTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.playerName", is("Player 1")))
-                .andExpect(jsonPath("$.winRate", is(0)))
+                .andExpect(jsonPath("$.winRate", is(0d)))
                 .andExpect(jsonPath("$").isNotEmpty());
     }
     @DisplayName("PlayerControllerUnitTest - winner returns player")
@@ -157,7 +157,7 @@ public class PlayerControllerUnitTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.playerName", is("Player 1")))
-                .andExpect(jsonPath("$.winRate", is(0)))
+                .andExpect(jsonPath("$.winRate", is(0d)))
                 .andExpect(jsonPath("$").isNotEmpty());
     }
 }

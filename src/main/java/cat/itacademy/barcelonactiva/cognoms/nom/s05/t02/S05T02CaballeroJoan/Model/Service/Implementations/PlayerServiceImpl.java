@@ -95,7 +95,7 @@ public class PlayerServiceImpl implements PlayerService {
         if(games.isEmpty()){
             return 0;
         }else{
-            double avg = games.stream().filter(Game::isWon).count();
+            double avg = games.stream().filter(Game::won).count();
             return avg/games.size();
         }
     }

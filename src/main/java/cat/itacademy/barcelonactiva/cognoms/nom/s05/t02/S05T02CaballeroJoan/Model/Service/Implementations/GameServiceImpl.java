@@ -48,11 +48,11 @@ public class GameServiceImpl implements GameService {
     public void diceRoll(Game game){
         Random rdm = new Random();
         game.setDiceOne(rdm.nextInt(6)+1);
-        game.setDiceOne(rdm.nextInt(6)+1);
+        game.setDiceTwo(rdm.nextInt(6)+1);
         game.setWon(game.won());
     }
 
     public GameDTO toDTO(Game game){
-        return new GameDTO(game.getGameID(), game.getPlayer().getId(),game.getDiceOne(), game.getDiceTwo(), game.isWon());
+        return new GameDTO(game.getGameID(), game.getPlayer().getId(),game.getDiceOne(), game.getDiceTwo(), game.won());
     }
 }

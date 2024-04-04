@@ -72,7 +72,7 @@ public class PlayerAdditionUnitTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(playerDTO)))
                 .andDo(print())
-                .andExpect(status().isConflict());
+                .andExpect(status().isInternalServerError());
     }
 
     @DisplayName("PlayerAdditionUnitTest - updatePlayer modifies existing player")

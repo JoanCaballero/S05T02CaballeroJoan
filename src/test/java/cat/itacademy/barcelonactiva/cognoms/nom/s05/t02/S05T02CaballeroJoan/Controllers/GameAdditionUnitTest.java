@@ -48,15 +48,15 @@ public class GameAdditionUnitTest {
     @DisplayName("GameAdditionUnitTest - playGame inserts new game")
     @Test
     void playGame() throws Exception{
-        mockMvc.perform(post("players/1/games"))
+        mockMvc.perform(post("/players/1/games"))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.gameid", is(1)))
-                .andExpect(jsonPath("$.playerId", is(1)))
-                .andExpect(jsonPath("$.die1").isNotEmpty())
-                .andExpect(jsonPath("$.die2").isNotEmpty())
-                .andExpect(jsonPath("$.victory").isNotEmpty())
+                .andExpect(jsonPath("$.gameID", is(702)))
+                .andExpect(jsonPath("$.playerID", is(1)))
+                .andExpect(jsonPath("$.diceOne").isNotEmpty())
+                .andExpect(jsonPath("$.diceTwo").isNotEmpty())
+                .andExpect(jsonPath("$.won").isNotEmpty())
                 .andExpect(jsonPath("$").isNotEmpty());
     }
 

@@ -43,7 +43,7 @@ public class GameRepositoryUnitTest {
     @DisplayName("GameRepositoryUnitTest - deletById deletes all games from player")
     @Test
     void deleteById(){
-        gameRepository.deleteById(1);
+        gameRepository.deleteByPlayerId(1);
         List<Game> games = gameRepository.findByPlayerId(1);
         assertEquals(0,games.size());
     }

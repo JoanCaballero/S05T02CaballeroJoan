@@ -12,5 +12,5 @@ public class GameDTO {
     private int playerID;
     private int diceOne;
     private int diceTwo;
-    private boolean won;
+    private Boolean won;
 }

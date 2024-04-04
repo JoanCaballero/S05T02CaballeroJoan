@@ -24,7 +24,7 @@ public class Game {
     private int diceTwo;
 
     @Column(name="result")
-    private boolean won;
+    private Boolean won;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "playerID", nullable = false)
@@ -35,7 +35,7 @@ public class Game {
     public Game(Player player){
         this.player = player;
     }
-    public boolean won(){
+    public Boolean won(){
         return diceOne + diceTwo == 7;
     }
 }
